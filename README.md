@@ -16,7 +16,7 @@ never creates GitHub repositories or Git commits and makes no Portainer changes.
 Run this in an interactive PowerShell 7 terminal:
 
 ```powershell
-Import-Module C:\OpenAI\PortainerToolkit\PortainerToolkit.psd1
+Import-Module .\PortainerToolkit\PortainerToolkit.psd1
 
 # Example address; HTTP requires explicit opt-in.
 # The next command prompts securely for your API access token.
@@ -38,6 +38,18 @@ HTTPS hostname and port in place of `https://portainer.example:9443`.
 That example URL is a placeholder; HTTPS has not been verified on your server.
 A secure prompt hides the token during entry, but HTTP still sends it
 unencrypted over the network. The toolkit does not bypass certificate validation.
+
+## Repository layout
+
+```text
+PortainerToolkit/   module folder (import PortainerToolkit.psd1)
+  Public/           one file per exported command
+  Private/          internal helpers, including the read-only request allowlist
+tests/Unit          Pester tests with mocked API responses
+tests/Integration   Pester tests against a loopback synthetic server
+build/              local test runner (syntax, manifest, Pester)
+config/             example configuration (no secrets)
+```
 
 ## Commands
 
@@ -74,12 +86,11 @@ The template `config\portainer.example.json` contains only a server URL,
 environment ID, timeout and HTTP opt-in. Copy it to a local configuration file:
 
 ```powershell
-Set-Location C:\OpenAI\PortainerToolkit
 Copy-Item .\config\portainer.example.json .\config\portainer.local.json
 # Edit portainer.local.json with your address. Set AllowHttp to true only for HTTP.
 
 $config = Get-Content .\config\portainer.local.json -Raw | ConvertFrom-Json -AsHashtable
-Import-Module .\PortainerToolkit.psd1
+Import-Module .\PortainerToolkit\PortainerToolkit.psd1
 Connect-PTServer @config
 ```
 
@@ -123,7 +134,7 @@ copies a caller-supplied SecureString and does not dispose the caller's original
 From the project folder:
 
 ```powershell
-pwsh -NoProfile -File .\Test-PTToolkit.ps1
+pwsh -NoProfile -File .\build\Test-PTToolkit.ps1
 ```
 
 The runner checks PowerShell syntax and module manifest, then runs Pester.

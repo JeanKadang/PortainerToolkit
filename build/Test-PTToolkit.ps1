@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param()
 $ErrorActionPreference = 'Stop'
-$taskRoot = $PSScriptRoot
+$taskRoot = Split-Path -Parent $PSScriptRoot
 
 # Validate all shipped PowerShell source before loading it.
 $sourceFiles = Get-ChildItem -LiteralPath $taskRoot -Recurse -File | Where-Object Extension -In @('.ps1','.psm1','.psd1')
@@ -15,7 +15,7 @@ foreach ($sourceFile in $sourceFiles) {
         exit 1
     }
 }
-$manifest = Test-ModuleManifest -Path (Join-Path $taskRoot 'PortainerToolkit.psd1')
+$manifest = Test-ModuleManifest -Path (Join-Path $taskRoot (Join-Path 'PortainerToolkit' 'PortainerToolkit.psd1'))
 Write-Host "Syntax and manifest valid: $($manifest.Name) $($manifest.Version)"
 
 if (-not (Get-Module -ListAvailable Pester | Where-Object Version -GE ([version]'5.7.1'))) {
