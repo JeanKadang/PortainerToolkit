@@ -45,3 +45,8 @@ config/*
 Thumbs.db
 .DS_Store
 
+
+# CI workflows are tracked.
+!.github/
+!.github/workflows/
+!.github/workflows/*.yml
