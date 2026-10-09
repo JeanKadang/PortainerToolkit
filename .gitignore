@@ -1,0 +1,47 @@
+# Local configuration: only the safe template is eligible for tracking.
+config/*
+!config/portainer.example.json
+
+# Exports, scratch files and captured output.
+/exports/
+/inventory/
+/backups/
+/logs/
+/work/
+/TestResults/
+/coverage/
+*.json
+!config/portainer.example.json
+*.csv
+*.txt
+*.log
+*.xml
+*.clixml
+*.yaml
+*.yml
+*.zip
+*.tar
+*.gz
+*.bak
+
+# Credentials and private certificate material.
+.env
+.env.*
+*.env
+*.key
+*.pem
+*.pfx
+*.p12
+*.cer
+*.credential*
+*.secret*
+*secrets*
+*credentials*
+
+# Editor / operating system files.
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+.DS_Store
+
