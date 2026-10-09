@@ -1,0 +1,7 @@
+{
+  "ServerUrl": "https://portainer.example:9443",
+  "EnvironmentId": 1,
+  "TimeoutSec": 30,
+  "AllowHttp": false
+}
+
