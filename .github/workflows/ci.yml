@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  pester:
+    name: Pester (Windows, PowerShell 7)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Pester
+        shell: pwsh
+        run: Install-Module Pester -MinimumVersion 5.7.1 -Force -Scope CurrentUser -SkipPublisherCheck
+      - name: Run tests
+        shell: pwsh
+        run: |
+          Import-Module Pester -MinimumVersion 5.7.1
+          Invoke-Pester -Path ./tests -CI -Output Detailed
